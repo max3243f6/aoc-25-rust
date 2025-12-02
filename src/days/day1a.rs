@@ -1,16 +1,30 @@
 use std::fs::read_to_string;
 
 pub fn main() {
-    let input = read_to_string("input/input1.txt").unwrap();
+    let instructions = read_to_string("input/input1.txt").unwrap().lines().map(|l| {
+        (
+            l.split_at(1).0.parse::<char>().unwrap(),
+            l.split_at(1).1.parse::<i32>().unwrap()%100
+        )
+    }).collect::<Vec<_>>();
 
-    let line_vec = input.lines().collect::<Vec<&str>>();
+    let mut password = 0;
+    let mut dial = 50;
 
-    let tuple_vec: Vec<(char, usize)> = Vec::new();
-
-    for line in line_vec {
-        let (mut first, mut second) = line.split_at(1);
-        first = first.parse::<char>().unwrap();
-        second.parse::<usize>();
-        tuple_vec.push((first, second));
+    for (direction, mut degree) in instructions {
+        if direction == 'L' {
+            degree *= -1;
+        }
+        if (dial + degree) < 0 {
+            dial = dial + degree + 100;
+        } else if (dial + degree) > 99 {
+            dial = dial + degree - 100;
+        } else {
+            dial = dial + degree;
+        }
+        if dial == 0 {
+            password += 1;
+        }
     }
+    println!("{password}")
 }
