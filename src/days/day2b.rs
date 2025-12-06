@@ -29,7 +29,7 @@ fn add_multiple_ids(lower: u64, upper: u64) -> u64 {
         let mut valid = true;
 
         // Go through all divisors up to half of the digit length and that do not fraction i
-        for j in 1..=(i.to_string().len() / 2) {
+        for j in 1..=((i as f64).log10().ceil() as usize / 2) {
             // Check if i's length is cleanly divisible by j
             if i.to_string().len() % j == 0 {
                 // Calculate the rest of i when trying to divide by the decimal place of j
@@ -39,7 +39,7 @@ fn add_multiple_ids(lower: u64, upper: u64) -> u64 {
                 let mut test_number: u64 = 0;
 
                 // Calculate test number from repeated multiples of j-decimal and subnumber and compare to i
-                for k in 0..=(i.to_string().len() / j - 1) {
+                for k in 0..=((i as f64).log10().ceil() as usize / j - 1) {
                     test_number += 10_u64.pow((k * j) as u32) * subnumber;
                 }
 
